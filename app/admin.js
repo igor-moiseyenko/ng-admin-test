@@ -15,10 +15,25 @@
 
         // Set the fields of the user entity list view
         user.listView().fields([
-          nga.field('name'),
+          nga.field('name').isDetailLink(true),
           nga.field('username'),
           nga.field('email')
         ]);
+
+        /* Throws 503 error after OPTIONS method call. Looks like CORS issue on the API side. */
+        user.creationView().fields([
+          nga.field('name'),
+          nga.field('username'),
+          nga.field('email', 'email'),
+          nga.field('address.street').label('Street'),
+          nga.field('address.city').label('City'),
+          nga.field('address.zipcode').label('Zipcode'),
+          nga.field('phone'),
+          nga.field('website')
+        ]);
+
+        /* Throws 503 error after OPTIONS method call. Looks like CORS issue on the API side. */
+        user.editionView().fields(user.creationView().fields());
 
         // Add the user entity to the admin application
         admin.addEntity(user);
